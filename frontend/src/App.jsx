@@ -4,13 +4,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import CustomerLayout from "./layouts/CustomerLayout";
 import EmployeeLayout from "./layouts/EmployeeLayout";
-
 // customer pages
-import { CustomerDashboard } from "./pages/customer/CustomerDashboard";
-import { Deposit } from "./pages/customer/Deposits";
+import CustomerDashboard from "./pages/customer/CustomerDashboard";
+import Deposit from "./pages/customer/Deposits";
 import Withdraw from "./pages/customer/Withdraw";
 import Transfer from "./pages/customer/Transfer";
-import { FixedDeposit } from "./pages/customer/FixedDeposit";
+import FixedDeposit from "./pages/customer/FixedDeposit";
 import RecurringDeposit from "./pages/customer/RecurringDeposit";
 import Support from "./pages/customer/Support";
 

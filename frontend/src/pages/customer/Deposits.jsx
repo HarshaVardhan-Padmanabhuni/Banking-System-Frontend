@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 
-export function Deposit() {
+export default function Deposit() {
 
     const role = "CUSTOMER";
 

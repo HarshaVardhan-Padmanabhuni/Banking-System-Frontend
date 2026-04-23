@@ -1,4 +1,4 @@
-export function FixedDeposit() {
+export default function FixedDeposit() {
     return (
         <>
             <div className="container mt-5 pt-5 w-50">

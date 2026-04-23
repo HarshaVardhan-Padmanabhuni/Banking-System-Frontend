@@ -1,0 +1,103 @@
+/* BACKGROUND */
+body {
+   background: linear-gradient(to right, #eef2f3, #dfe9f3);
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+/* DASHBOARD CONTAINER */
+.dashboard-container {
+   margin-top: 90px;
+   padding: 30px;
+}
+/* TITLE */
+.dashboard-title {
+   text-align: center;
+   font-weight: bold;
+   margin-bottom: 40px;
+   color: #2c3e50;
+}
+/* GRID */
+.card-grid {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+   gap: 25px;
+}
+/* CARD BASE */
+.dashboard-card {
+   padding: 25px;
+   border-radius: 15px;
+   color: white;
+   text-align: center;
+   cursor: pointer;
+   transition: 0.3s;
+   box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+.dashboard-card h5 {
+   font-size: 18px;
+   margin-bottom: 10px;
+}
+.dashboard-card p {
+   font-size: 13px;
+}
+/* HOVER EFFECT */
+.dashboard-card:hover {
+   transform: translateY(-8px) scale(1.03);
+}
+/* COLORS FOR EACH CARD */
+.deposit {
+   background: linear-gradient(135deg, #00c6ff, #0072ff);
+}
+.withdraw {
+   background: linear-gradient(135deg, #ff6a00, #ee0979);
+}
+.transfer {
+   background: linear-gradient(135deg, #56ab2f, #a8e063);
+}
+.fd {
+   background: linear-gradient(135deg, #8e2de2, #4a00e0);
+}
+.rd {
+   background: linear-gradient(135deg, #f7971e, #ffd200);
+}
+.support {
+   background: linear-gradient(135deg, #ff416c, #ff4b2b);
+}
+/* FORM CONTAINER */
+.form-container {
+   max-width: 450px;
+   margin: 100px auto;
+   padding: 30px;
+   border-radius: 15px;
+   background: white;
+   box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+/* TITLE */
+.form-title {
+   text-align: center;
+   margin-bottom: 20px;
+   color: #2c3e50;
+}
+/* INPUT */
+.form-control {
+   margin-bottom: 15px;
+}
+/* BUTTON */
+.btn-submit {
+   width: 100%;
+   padding: 10px;
+   border-radius: 8px;
+   border: none;
+   font-weight: bold;
+   color: white;
+   background: linear-gradient(135deg, #0072ff, #00c6ff);
+   transition: 0.3s;
+}
+.btn-submit:hover {
+   transform: scale(1.03);
+}
+/* SUCCESS TEXT */
+.success-msg {
+   text-align: center;
+   margin-top: 15px;
+   color: green;
+   font-weight: bold;
+}

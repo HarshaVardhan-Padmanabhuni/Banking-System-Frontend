@@ -42,46 +42,9 @@ export default function CustomerNavBar({ supportCount = 0 }) {
             </li>
 
             {/* Quick Actions Dropdown */}
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Quick Actions
-              </a>
-              <ul className="dropdown-menu dropdown-menu-end">
-                <li>
-                  <NavLink className="dropdown-item" to="/customer/deposit">
-                    Deposit
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink className="dropdown-item" to="/customer/withdraw">
-                    Withdraw
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink className="dropdown-item" to="/customer/transfer">
-                    Transfer
-                  </NavLink>
-                </li>
-              </ul>
-            </li>
+           
 
-            <li className="nav-item">
-              <NavLink className={linkClass} to="/customer/fixed-deposit">
-                Fixed Deposit
-              </NavLink>
-            </li>
-
-            <li className="nav-item">
-              <NavLink className={linkClass} to="/customer/recurring-deposit">
-                Recurring Deposit
-              </NavLink>
-            </li>
+            
 
             {/* Support with badge */}
             <li className="nav-item">
