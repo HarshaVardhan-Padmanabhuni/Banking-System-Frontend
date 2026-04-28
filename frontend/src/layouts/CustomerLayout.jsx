@@ -7,7 +7,7 @@ export default function CustomerLayout() {
   return (
     <>
       <CustomerNavBar supportCount={2} />
-      <div className="container mt-3">
+      <div style={{width: "100%"}}>
         <Outlet />
       </div>
     </>

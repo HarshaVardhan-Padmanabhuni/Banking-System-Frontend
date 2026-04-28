@@ -1,0 +1,466 @@
+.deposit-container {
+
+  padding: 40px;
+
+  max-width: 500px;
+
+}
+
+.deposit-form,
+
+.pin-section {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 16px;
+
+}
+
+input {
+
+  padding: 12px;
+
+  border-radius: 8px;
+
+  border: 1px solid #ccc;
+
+}
+
+button {
+
+  padding: 12px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: #2563eb;
+
+  color: white;
+
+  cursor: pointer;
+
+}
+
+button:disabled {
+
+  background: gray;
+
+  cursor: not-allowed;
+
+}
+
+/* LOCK EFFECT */
+
+.disabled {
+
+  opacity: 0.5;
+
+}
+
+/* Messages */
+
+.success {
+
+  color: green;
+
+  font-weight: 500;
+
+}
+
+.error {
+
+  color: red;
+
+}
+
+.deposit-page {
+
+  padding: 40px;
+
+  min-height: 100vh;
+
+  background: #f4f6fb;
+
+}
+
+.page-title {
+
+  margin-bottom: 20px;
+
+  font-size: 24px;
+
+  font-weight: 600;
+
+}
+
+/* MAIN CARD */
+
+.deposit-card {
+
+  background: white;
+
+  padding: 32px;
+
+  border-radius: 20px;
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+
+}
+
+/* GRID FORM */
+
+.form-grid {
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 20px;
+
+}
+
+.form-group {
+
+  display: flex;
+
+  flex-direction: column;
+
+}
+
+.form-group label {
+
+  margin-bottom: 6px;
+
+  font-size: 14px;
+
+  color: #555;
+
+}
+
+.form-group input {
+
+  padding: 12px;
+
+  border-radius: 10px;
+
+  border: 1px solid #ddd;
+
+}
+
+/* BUTTON AREA */
+
+.form-actions {
+
+  grid-column: span 2;
+
+}
+
+button {
+
+  padding: 12px 18px;
+
+  border-radius: 10px;
+
+  border: none;
+
+  background: #2563eb;
+
+  color: white;
+
+  cursor: pointer;
+
+}
+
+/* PIN SECTION */
+
+.pin-section {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 20px;
+
+}
+
+/* SUMMARY */
+
+.summary-block {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  background: #f9fafc;
+
+  padding: 16px;
+
+  border-radius: 12px;
+
+}
+
+.label {
+
+  font-size: 12px;
+
+  color: gray;
+
+}
+
+.value {
+
+  font-weight: 500;
+
+}
+
+/* PIN FORM */
+
+.pin-form {
+
+  display: flex;
+
+  gap: 12px;
+
+}
+
+.pin-form input {
+
+  flex: 1;
+
+}
+
+/* LOCK EFFECT */
+
+.disabled {
+
+  opacity: 0.5;
+
+}
+
+/* SUCCESS */
+
+.success-box {
+
+  padding: 20px;
+
+  background: #ecfdf5;
+
+  color: #16a34a;
+
+  border-radius: 12px;
+
+  font-weight: 500;
+
+}
+
+/* ERROR */
+
+.error {
+
+  color: #dc2626;
+
+  margin-top: 12px;
+
+}
+
+/* OVERLAY (darker + slight blur) */
+
+.modal-overlay {
+
+  position: fixed;
+
+  top: 0;
+
+  left: 0;
+
+  width: 100%;
+
+  height: 100%;
+
+  background: rgba(0, 0, 0, 0.45);   /* 🔥 stronger dim */
+
+  backdrop-filter: blur(3px);        /* 🔥 modern blur */
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  z-index: 1000;
+
+}
+
+/* POPUP BOX (bigger + clean layout) */
+
+.modal-box {
+
+  background: white;
+
+  padding: 32px;
+
+  border-radius: 18px;
+
+  width: 520px;          /* 🔥 bigger */
+
+  max-width: 90%;
+
+  box-shadow: 0 25px 60px rgba(0,0,0,0.2);
+
+  animation: popupScale 0.25s ease;
+
+}
+
+/* ANIMATION */
+
+@keyframes popupScale {
+
+  from {
+
+    transform: scale(0.92);
+
+    opacity: 0;
+
+  }
+
+  to {
+
+    transform: scale(1);
+
+    opacity: 1;
+
+  }
+
+}
+
+/* TITLE */
+
+.popup-title {
+
+  margin-bottom: 20px;
+
+  font-size: 20px;
+
+  font-weight: 600;
+
+}
+
+/* FIX FORM GRID INSIDE MODAL */
+
+.modal-box .form-grid {
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 16px;
+
+}
+
+/* INPUT FIX (important for your overflow issue) */
+
+.modal-box input {
+
+  width: 100%;
+
+  box-sizing: border-box;   /* 🔥 prevents overflow */
+
+}
+
+/* BUTTON AREA */
+
+.modal-box .form-actions {
+
+  grid-column: span 2;
+
+  margin-top: 10px;
+
+}
+
+/* CLOSE BUTTON */
+
+.close-btn {
+
+  margin-top: 16px;
+
+  background: #f1f5f9;
+
+  color: #333;
+
+}
+
+.back-btn {
+
+  margin-top: 10px;
+
+  background: transparent;
+
+  border: none;
+
+  color: #2563eb;
+
+  cursor: pointer;
+
+  font-size: 14px;
+
+  text-align: left;
+
+}
+
+.back-btn:hover {
+
+  text-decoration: underline;
+
+}
+
+.plan-card {
+
+  background: #f9fafc;
+
+  padding: 20px;
+
+  border-radius: 14px;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;   /* 🔥 important */
+
+}
+
+/* 🔥 HOVER EFFECT */
+
+.plan-card:hover {
+
+  transform: translateY(-6px);
+
+  background: #eef2ff;
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+
+}
+
+.maturity-box {
+
+  grid-column: span 2;
+
+  background: #f0f9ff;
+
+  padding: 14px;
+
+  border-radius: 12px;
+
+  margin-top: 10px;
+
+}
+
+.maturity-box .value {
+
+  font-weight: 600;
+
+  color: #2563eb;
+
+}
+ 

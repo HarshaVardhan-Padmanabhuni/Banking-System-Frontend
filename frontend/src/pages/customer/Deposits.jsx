@@ -1,32 +1,178 @@
 import { useState } from "react";
 
+import "./features.css";
 
-export default function Deposit() {
+export default function Deposits() {
 
-    const role = "CUSTOMER";
+  const [account, setAccount] = useState("");
 
-    const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState("");
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        alert("Deposited: " + amount);
-    };
+  const [pin, setPin] = useState("");
 
-    return (
-        <>
-            
+  const [step, setStep] = useState(1);
 
-            <div className="container mt-5 pt-5 w-50">
-                <h2>Deposit Money</h2>
+  const [attempts, setAttempts] = useState(0);
 
-                <form onSubmit={handleSubmit}>
-                    <input className="form-control mb-3"
-                        placeholder="Enter Amount"
-                        onChange={(e) => setAmount(e.target.value)} />
+  const [locked, setLocked] = useState(false);
 
-                    <button className="btn btn-primary">Deposit</button>
-                </form>
-            </div>
-        </>
-    );
+  const [message, setMessage] = useState("");
+
+  const CORRECT_PIN = "1234";
+
+  const handleDetailsSubmit = (e) => {
+
+    e.preventDefault();
+
+    setStep(2);
+
+  };
+
+  const handlePinSubmit = (e) => {
+
+    e.preventDefault();
+
+    if (locked) return;
+
+    if (pin === CORRECT_PIN) {
+
+      setMessage(`₹ ${amount} deposited successfully!`);
+
+      setStep(3);
+
+    } else {
+
+      const newAttempts = attempts + 1;
+
+      setAttempts(newAttempts);
+
+      if (newAttempts >= 3) {
+
+        setLocked(true);
+
+        setMessage("Too many incorrect attempts. Try again in 30 seconds.");
+
+        setTimeout(() => {
+
+          setLocked(false);
+
+          setAttempts(0);
+
+          setPin("");
+
+          setMessage("");
+
+        }, 30000);
+
+      } else {
+
+        setMessage("Incorrect PIN");
+
+      }
+
+    }
+
+  };
+
+
+return (
+<div className="deposit-page">
+<h2 className="page-title">Deposit Money</h2>
+<div className="deposit-card">
+
+      {/* SECTION 1 */}
+
+      {step === 1 && (
+<form onSubmit={handleDetailsSubmit} className="form-grid">
+<div className="form-group">
+<label>Account Number</label>
+<input
+
+              type="text"
+
+              value={account}
+
+              onChange={(e) => setAccount(e.target.value)}
+
+              required
+
+            />
+</div>
+<div className="form-group">
+<label>Amount</label>
+<input
+
+              type="number"
+
+              value={amount}
+
+              onChange={(e) => setAmount(e.target.value)}
+
+              required
+
+            />
+</div>
+<div className="form-actions">
+<button type="submit">Proceed</button>
+</div>
+</form>
+
+      )}
+
+      {/* SECTION 2 */}
+
+      {step === 2 && (
+<div className={`pin-section ${locked ? "disabled" : ""}`}>
+<div className="summary-block">
+<div>
+<p className="label">Account</p>
+<p className="value">{account}</p>
+</div>
+<div>
+<p className="label">Amount</p>
+<p className="value">₹ {amount}</p>
+</div>
+</div>
+<form onSubmit={handlePinSubmit} className="pin-form">
+<input
+
+              type="password"
+
+              placeholder="Enter PIN"
+
+              value={pin}
+
+              onChange={(e) => setPin(e.target.value)}
+
+              disabled={locked}
+
+              required
+
+            />
+<button type="submit" disabled={locked}>
+
+              Confirm Transaction
+</button>
+</form>
+</div>
+
+      )}
+
+      {/* SECTION 3 */}
+
+      {step === 3 && (
+<div className="success-box">
+
+          {message}
+</div>
+
+      )}
+
+      {message && step !== 3 && <p className="error">{message}</p>}
+</div>
+</div>
+
+);
+
 }
+ 
