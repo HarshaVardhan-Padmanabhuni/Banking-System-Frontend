@@ -13,8 +13,8 @@ export default function CustomerNavBar({ supportCount = 0 }) {
           <img
             src="https://cdn.corenexis.com/files/c/5699658720.png"
             alt="Bank"
-            width="120"
-            height="60"
+            width="150"
+            height="70"
             className="d-inline-block align-text-top"
           />
         </NavLink>
