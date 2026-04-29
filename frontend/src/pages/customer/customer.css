@@ -1,0 +1,283 @@
+.dashboard-container {
+
+  padding: 28px 40px;
+
+  background: #f4f6fb;
+
+  min-height: 100vh;
+
+  width: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 24px;
+
+}
+
+body {
+
+  margin: 0;
+
+}
+
+.balance-card {
+
+  background: linear-gradient(135deg, #1e3a8a, #3b82f6, #60a5fa);
+
+  color: white;
+
+  padding: 26px;
+
+  border-radius: 18px;
+
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.25);
+
+  transition: all 0.25s ease;
+
+}
+
+.balance-card:hover {
+
+  transform: translateY(-4px);
+
+  box-shadow: 0 16px 40px rgba(37, 99, 235, 0.35);
+
+}
+
+.balance {
+
+  font-size: 36px;
+
+  margin: 8px 0;
+
+  font-weight: 600;
+
+  letter-spacing: 0.5px;
+
+}
+
+.actions-container {
+
+  display: flex;
+
+  gap: 16px;
+
+  margin-bottom: 24px;
+
+}
+
+.action-btn {
+
+  flex: 1;
+
+  padding: 16px;
+
+  border-radius: 14px;
+
+  border: none;
+
+  background-color: white;
+
+  color: #1e293b;   /* 🔥 ADD THIS */
+
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+
+}
+
+.action-btn:hover {
+
+  transform: translateY(-4px);
+
+  background: linear-gradient(135deg, #e0e7ff, #eef2ff);
+
+  box-shadow: 0 10px 24px rgba(0,0,0,0.1);
+
+}
+
+.transactions {
+
+  background: white;
+
+  padding: 24px;
+
+  border-radius: 18px;
+
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+
+  transition: all 0.2s ease;
+
+}
+
+.transactions:hover {
+
+  transform: translateY(-3px);
+
+}
+
+.transactions h3 {
+
+  font-weight: 600;
+
+  font-size: 20px;
+
+}
+
+.transaction-item {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  padding: 12px 0;
+
+  border-bottom: 1px solid #eee;
+
+}
+
+.title {
+
+  font-weight: 500;
+
+}
+
+.date {
+
+  font-size: 12px;
+
+  color: gray;
+
+}
+
+.debit {
+
+  color: #dc2626;
+
+  font-weight: 500;
+
+}
+
+.credit {
+
+  color: #16a34a;
+
+  font-weight: 500;
+
+}
+
+/* FADE IN PAGE */
+
+.fade-in {
+
+  animation: fadeIn 0.5s ease-in-out;
+
+}
+
+@keyframes fadeIn {
+
+  from {
+
+    opacity: 0;
+
+  }
+
+  to {
+
+    opacity: 1;
+
+  }
+
+}
+
+/* SLIDE UP EFFECT */
+
+.slide-up {
+
+  opacity: 1;
+
+  transform: translateY(25px);
+
+  animation: slideUp 0.6s ease forwards;
+
+}
+
+@keyframes slideUp {
+
+  to {
+
+    opacity: 1;
+
+    transform: translateY(0);
+
+  }
+
+}
+
+.delay-1 {
+
+  animation-delay: 0.2s;
+
+  animation-fill-mode: forwards;
+
+}
+
+.delay-2 {
+
+  animation-delay: 0.4s;
+
+  animation-fill-mode: forwards;
+
+}
+ .profile-page {
+  padding: 24px;
+}
+
+.profile-card {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 28px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.profile-title {
+  margin-bottom: 24px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.profile-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.profile-field:last-child {
+  border-bottom: none;
+}
+
+.profile-label {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.profile-value {
+  color: #111827;
+  font-weight: 600;
+}
+.ref{
+  font-size: 11px;
+  color: gray;
+}

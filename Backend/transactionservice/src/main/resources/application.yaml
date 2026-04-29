@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: transactionservice
+
+  datasource:
+    url: jdbc:mysql://localhost:3307/Bankingsystem
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+server:
+
+  port: 8902
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/
+  instance:
+    prefer-ip-address: true
+
+logging:
+  level:
+    root: DEBUG
+

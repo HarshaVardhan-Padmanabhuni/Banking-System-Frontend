@@ -1,0 +1,48 @@
+server:
+  port: 9192
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+
+
+#            - id: auth-service
+#              uri: lb://authservice
+#              predicates:
+#                - Path=/auth/**
+
+
+            - id: transaction-service
+              uri: lb://transactionservice
+              predicates:
+                - Path=/api/transactions/**
+
+
+            - id: account-service-accounts
+              uri: lb://accountservice
+              predicates:
+                - Path=/accounts/**
+
+
+            - id: account-service-deposits
+              uri: lb://accountservice
+              predicates:
+                - Path=/deposits/**
+
+
+            - id: banking-system-2
+              uri: lb://Banking-System-2
+              predicates:
+                - Path=/api/customers/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
