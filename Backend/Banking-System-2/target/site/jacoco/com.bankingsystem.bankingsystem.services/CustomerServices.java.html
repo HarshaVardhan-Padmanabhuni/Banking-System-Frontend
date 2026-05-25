@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomerServices.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report"></a> &gt; <a href="index.source.html" class="el_package">com.bankingsystem.bankingsystem.services</a> &gt; <span class="el_source">CustomerServices.java</span></div><h1>CustomerServices.java</h1><pre class="source lang-java linenums">
+package com.bankingsystem.bankingsystem.services;
+
+import com.bankingsystem.bankingsystem.entity.Customer;
+import com.bankingsystem.bankingsystem.entity.CustomerStatus;
+import com.bankingsystem.bankingsystem.entity.KycStatus;
+import com.bankingsystem.bankingsystem.exceptions.ResourceNotFoundException;
+import com.bankingsystem.bankingsystem.repositories.CustomerRepository;
+import com.bankingsystem.bankingsystem.repositories.CustomerStatusRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@Transactional
+public class CustomerServices implements CustomerServiceImp {
+
+    private static final String CUSTOMER_NOT_FOUND = &quot;Customer not found with id: &quot;;
+
+
+    private final CustomerRepository customerRepository;
+    private final CustomerStatusRepository customerStatusRepository;
+
+    public CustomerServices(CustomerRepository customerRepository,
+<span class="fc" id="L26">                               CustomerStatusRepository customerStatusRepository) {</span>
+<span class="fc" id="L27">        this.customerRepository = customerRepository;</span>
+<span class="fc" id="L28">        this.customerStatusRepository = customerStatusRepository;</span>
+<span class="fc" id="L29">    }</span>
+
+    // -------------------- Customer CRUD --------------------
+
+    @Override
+    public Customer registerCustomer(Customer customer) {
+<span class="fc" id="L35">        validateCustomerBasics(customer);</span>
+<span class="fc" id="L36">        applyKycPendingAndValidateProof(customer);</span>
+
+<span class="fc" id="L38">        Customer saved = customerRepository.save(customer);</span>
+
+<span class="fc" id="L40">        CustomerStatus status = customerStatusRepository</span>
+<span class="fc" id="L41">                .findByCustomer_Customerid(saved.getCustomerid())</span>
+<span class="fc" id="L42">                .orElseGet(() -&gt; new CustomerStatus(saved));</span>
+
+<span class="fc" id="L44">        status.setRemarks(&quot;Registered - pending activation&quot;);</span>
+<span class="fc" id="L45">        customerStatusRepository.save(status);</span>
+
+<span class="fc" id="L47">        return saved;</span>
+    }
+
+    private void validateCustomerBasics(Customer customer) {
+<span class="fc bfc" id="L51" title="All 4 branches covered.">        if (customer.getUser() == null || customer.getUser().getUserid() == null) {</span>
+<span class="fc" id="L52">            throw new IllegalArgumentException(&quot;UserId is required&quot;);</span>
+        }
+
+<span class="fc" id="L55">        requireNonBlank(customer.getFullname(), &quot;Fullname is required&quot;);</span>
+<span class="fc" id="L56">        requireNonBlank(customer.getEmail(), &quot;Email is required&quot;);</span>
+<span class="fc" id="L57">        requireNonBlank(customer.getPhone(), &quot;Phone is required&quot;);</span>
+<span class="fc" id="L58">    }</span>
+
+    private void applyKycPendingAndValidateProof(Customer customer) {
+        // Always set KYC to PENDING initially (same as your code)
+<span class="fc" id="L62">        customer.setKycstatus(KycStatus.PENDING);</span>
+
+        // If ID proof is provided → validate both fields (same condition as your code: checks null only)
+<span class="fc bfc" id="L65" title="All 4 branches covered.">        boolean anyProofProvided = customer.getIdprooftype() != null || customer.getIdproofnumber() != null;</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        if (!anyProofProvided) {</span>
+<span class="fc" id="L67">            return;</span>
+        }
+
+<span class="fc" id="L70">        requireNonBlank(customer.getIdprooftype(), &quot;idprooftype is required&quot;);</span>
+<span class="fc" id="L71">        requireNonBlank(customer.getIdproofnumber(), &quot;idproofnumber is required&quot;);</span>
+
+        // Trim for safety (same as your code)
+<span class="fc" id="L74">        customer.setIdprooftype(customer.getIdprooftype().trim());</span>
+<span class="fc" id="L75">        customer.setIdproofnumber(customer.getIdproofnumber().trim());</span>
+<span class="fc" id="L76">    }</span>
+
+    private void requireNonBlank(String value, String message) {
+<span class="fc bfc" id="L79" title="All 4 branches covered.">        if (value == null || value.trim().isEmpty()) {</span>
+<span class="fc" id="L80">            throw new IllegalArgumentException(message);</span>
+        }
+<span class="fc" id="L82">    }</span>
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public Customer getCustomerById(Long customerId) {
+<span class="fc" id="L88">        return customerRepository.findById(customerId)</span>
+<span class="fc" id="L89">                .orElseThrow(() -&gt; new ResourceNotFoundException(CUSTOMER_NOT_FOUND+ customerId));</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Customer getCustomerByUserId(Long userId) {
+<span class="pc" id="L95">        return customerRepository.findByUser_Userid(userId)</span>
+<span class="pc" id="L96">                .orElseThrow(() -&gt; new ResourceNotFoundException(CUSTOMER_NOT_FOUND + userId));</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Customer getCustomerByEmail(String email) {
+<span class="pc" id="L102">        return customerRepository.findByEmail(email)</span>
+<span class="pc" id="L103">                .orElseThrow(() -&gt; new ResourceNotFoundException(CUSTOMER_NOT_FOUND+ email));</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Customer getCustomerByPhone(String phone) {
+<span class="pc" id="L109">        return customerRepository.findByPhone(phone)</span>
+<span class="pc" id="L110">                .orElseThrow(() -&gt; new ResourceNotFoundException(CUSTOMER_NOT_FOUND+ phone));</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List&lt;Customer&gt; getAllCustomers() {
+<span class="fc" id="L116">        return this.customerRepository.findAll();</span>
+    }
+
+
+    @Override
+    public Customer updateCustomer(Long customerId, Customer updated) {
+
+<span class="fc" id="L123">        Customer existing = customerRepository.findById(customerId)</span>
+<span class="fc" id="L124">                .orElseThrow(() -&gt;</span>
+<span class="fc" id="L125">                        new ResourceNotFoundException(CUSTOMER_NOT_FOUND+ customerId)</span>
+                );
+
+<span class="fc bfc" id="L128" title="All 2 branches covered.">        if (updated.getFullname() != null) existing.setFullname(updated.getFullname());</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">        if (updated.getEmail() != null) existing.setEmail(updated.getEmail());</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">        if (updated.getPhone() != null) existing.setPhone(updated.getPhone());</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">        if (updated.getAddress() != null) existing.setAddress(updated.getAddress());</span>
+
+<span class="fc" id="L133">        return customerRepository.save(existing);</span>
+    }
+
+
+    @Override
+    public void deleteCustomer(Long customerId) {
+
+<span class="fc" id="L140">        Customer existing = customerRepository.findById(customerId)</span>
+<span class="fc" id="L141">                .orElseThrow(() -&gt;</span>
+<span class="fc" id="L142">                        new ResourceNotFoundException(CUSTOMER_NOT_FOUND + customerId)</span>
+                );
+
+<span class="fc" id="L145">        customerStatusRepository.findByCustomer_Customerid(customerId)</span>
+<span class="fc" id="L146">                .ifPresent(customerStatusRepository::delete);</span>
+
+<span class="fc" id="L148">        customerRepository.delete(existing);</span>
+<span class="fc" id="L149">    }</span>
+
+
+    // -------------------- Customer Status Management --------------------
+
+    @Override
+    @Transactional(readOnly = true)
+    public CustomerStatus getCustomerStatus(Long customerId) {
+
+        // ensure customer exists
+<span class="fc" id="L159">        Customer customer = customerRepository.findById(customerId)</span>
+<span class="fc" id="L160">                .orElseThrow(() -&gt;</span>
+<span class="fc" id="L161">                        new ResourceNotFoundException(CUSTOMER_NOT_FOUND + customerId)</span>
+                );
+
+<span class="fc" id="L164">        return customerStatusRepository.findByCustomer_Customerid(customer.getCustomerid())</span>
+<span class="fc" id="L165">                .orElseThrow(() -&gt;</span>
+<span class="fc" id="L166">                        new ResourceNotFoundException(CUSTOMER_NOT_FOUND+ customerId)</span>
+                );
+    }
+
+    @Override
+    public CustomerStatus activateCustomer(Long customerId, String remarks) {
+
+<span class="fc" id="L173">        Customer customer = customerRepository.findById(customerId)</span>
+<span class="fc" id="L174">                .orElseThrow(() -&gt;</span>
+<span class="fc" id="L175">                        new ResourceNotFoundException(CUSTOMER_NOT_FOUND + customerId)</span>
+                );
+
+<span class="fc" id="L178">        CustomerStatus status = customerStatusRepository</span>
+<span class="fc" id="L179">                .findByCustomer_Customerid(customer.getCustomerid())</span>
+<span class="fc" id="L180">                .orElseGet(() -&gt; new CustomerStatus(customer));</span>
+
+<span class="fc" id="L182">        status.setAccountactive(true);</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">        status.setRemarks(remarks != null ? remarks : &quot;Activated&quot;);</span>
+
+<span class="fc" id="L185">        return customerStatusRepository.save(status);</span>
+    }
+
+
+    @Override
+    public CustomerStatus deactivateCustomer(Long customerId, String remarks) {
+
+<span class="fc" id="L192">        Customer customer = customerRepository.findById(customerId)</span>
+<span class="fc" id="L193">                .orElseThrow(() -&gt;</span>
+<span class="fc" id="L194">                        new ResourceNotFoundException(CUSTOMER_NOT_FOUND+ customerId)</span>
+                );
+
+<span class="fc" id="L197">        CustomerStatus status = customerStatusRepository</span>
+<span class="fc" id="L198">                .findByCustomer_Customerid(customer.getCustomerid())</span>
+<span class="fc" id="L199">                .orElseGet(() -&gt; new CustomerStatus(customer));</span>
+
+<span class="fc" id="L201">        status.setAccountactive(false);</span>
+<span class="fc bfc" id="L202" title="All 2 branches covered.">        status.setRemarks(remarks != null ? remarks : &quot;Deactivated&quot;);</span>
+
+<span class="fc" id="L204">        return customerStatusRepository.save(status);</span>
+    }
+
+
+    @Override
+    public Customer submitKycProof(Long customerId, String idProofType, String idProofNumber) {
+
+<span class="fc" id="L211">        Customer customer = customerRepository.findById(customerId)</span>
+<span class="fc" id="L212">                .orElseThrow(() -&gt;</span>
+<span class="fc" id="L213">                        new ResourceNotFoundException(CUSTOMER_NOT_FOUND+ customerId)</span>
+                );
+
+<span class="fc bfc" id="L216" title="All 4 branches covered.">        if (idProofType == null || idProofType.trim().isEmpty()) {</span>
+<span class="fc" id="L217">            throw new IllegalArgumentException(&quot;idprooftype is required&quot;);</span>
+        }
+
+<span class="pc bpc" id="L220" title="1 of 4 branches missed.">        if (idProofNumber == null || idProofNumber.trim().isEmpty()) {</span>
+<span class="fc" id="L221">            throw new IllegalArgumentException(&quot;idproofnumber is required&quot;);</span>
+        }
+
+<span class="fc" id="L224">        customer.setIdprooftype(idProofType.trim());</span>
+<span class="fc" id="L225">        customer.setIdproofnumber(idProofNumber.trim());</span>
+
+        // Customer submits proof → keep status PENDING
+<span class="fc" id="L228">        customer.setKycstatus(KycStatus.PENDING);</span>
+
+<span class="fc" id="L230">        return customerRepository.save(customer);</span>
+    }
+
+
+    // -------------------- KYC Management --------------------
+
+    @Override
+    public Customer updateKycStatus(Long customerId, KycStatus status) {
+
+<span class="fc" id="L239">        Customer customer = customerRepository.findById(customerId)</span>
+<span class="fc" id="L240">                .orElseThrow(() -&gt;</span>
+<span class="fc" id="L241">                        new ResourceNotFoundException(CUSTOMER_NOT_FOUND + customerId)</span>
+                );
+
+<span class="fc" id="L244">        customer.setKycstatus(status);</span>
+
+<span class="fc" id="L246">        return customerRepository.save(customer); // ✅ THIS LINE WAS MISSING</span>
+    }
+
+
+    // -------------------- Existence checks --------------------
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existsByEmail(String email) {
+<span class="fc" id="L255">        return customerRepository.existsByEmail(email);</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existsByPhone(String phone) {
+<span class="fc" id="L261">        return customerRepository.existsByPhone(phone);</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existsByUserId(Long userId) {
+<span class="fc" id="L267">        return customerRepository.existsByUser_Userid(userId);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

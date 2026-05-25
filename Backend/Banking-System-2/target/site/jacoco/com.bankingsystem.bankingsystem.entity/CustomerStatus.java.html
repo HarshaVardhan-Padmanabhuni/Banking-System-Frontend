@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomerStatus.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report"></a> &gt; <a href="index.source.html" class="el_package">com.bankingsystem.bankingsystem.entity</a> &gt; <span class="el_source">CustomerStatus.java</span></div><h1>CustomerStatus.java</h1><pre class="source lang-java linenums">package com.bankingsystem.bankingsystem.entity;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = &quot;customerstatus&quot;)
+public class CustomerStatus {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = &quot;statusid&quot;)
+    private Long statusid;
+
+    @OneToOne
+    @JoinColumn(name = &quot;customerid&quot;, nullable = false, unique = true)
+    private Customer customer;
+
+<span class="fc" id="L19">    @Column(name = &quot;accountactive&quot;, nullable = false)</span>
+<span class="fc" id="L20">    private Boolean accountactive = false;</span>
+
+    @Column(name = &quot;remarks&quot;, length = 255)
+    private String remarks;
+
+    @Column(name = &quot;updatedat&quot;)
+    private LocalDateTime updatedat;
+
+    @PrePersist
+    @PreUpdate
+    public void updateTimestamp() {
+<span class="fc" id="L31">        this.updatedat = LocalDateTime.now();</span>
+<span class="fc" id="L32">    }</span>
+
+<span class="fc" id="L34">    public CustomerStatus() {</span>
+<span class="fc" id="L35">    }</span>
+
+<span class="fc" id="L37">    public CustomerStatus(Customer customer) {</span>
+<span class="fc" id="L38">        this.customer = customer;</span>
+<span class="fc" id="L39">        this.accountactive = false;</span>
+<span class="fc" id="L40">    }</span>
+
+    public Long getStatusid() {
+<span class="fc" id="L43">        return statusid;</span>
+    }
+
+    public void setStatusid(Long statusid) {
+<span class="nc" id="L47">        this.statusid = statusid;</span>
+<span class="nc" id="L48">    }</span>
+
+    public Customer getCustomer() {
+<span class="fc" id="L51">        return customer;</span>
+    }
+
+    public void setCustomer(Customer customer) {
+<span class="nc" id="L55">        this.customer = customer;</span>
+<span class="nc" id="L56">    }</span>
+
+    public Boolean getAccountactive() {
+<span class="fc" id="L59">        return accountactive;</span>
+    }
+
+    public void setAccountactive(Boolean accountactive) {
+<span class="fc" id="L63">        this.accountactive = accountactive;</span>
+<span class="fc" id="L64">    }</span>
+
+    public String getRemarks() {
+<span class="fc" id="L67">        return remarks;</span>
+    }
+
+    public void setRemarks(String remarks) {
+<span class="fc" id="L71">        this.remarks = remarks;</span>
+<span class="fc" id="L72">    }</span>
+
+    public LocalDateTime getUpdatedat() {
+<span class="fc" id="L75">        return updatedat;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

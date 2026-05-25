@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmployeeServices.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report"></a> &gt; <a href="index.source.html" class="el_package">com.bankingsystem.bankingsystem.services</a> &gt; <span class="el_source">EmployeeServices.java</span></div><h1>EmployeeServices.java</h1><pre class="source lang-java linenums">
+
+package com.bankingsystem.bankingsystem.services;
+
+import com.bankingsystem.bankingsystem.entity.Employee;
+import com.bankingsystem.bankingsystem.exceptions.ResourceNotFoundException;
+import com.bankingsystem.bankingsystem.repositories.EmployeeRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+public class EmployeeServices implements EmployeeServiceImp {
+
+    private static final String EMPLOYEE_NOT_FOUND = &quot;Employee not found with id: &quot;;
+
+
+    private final EmployeeRepository employeeRepository;
+
+<span class="fc" id="L21">    public EmployeeServices(EmployeeRepository employeeRepository) {</span>
+<span class="fc" id="L22">        this.employeeRepository = employeeRepository;</span>
+<span class="fc" id="L23">    }</span>
+
+    // -------------------- Employee Registration --------------------
+
+    @Override
+    @Transactional
+    public Employee registerEmployee(Employee employee) {
+
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        if (employee.getUser() == null ||</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">                employee.getUser().getUserid() == null) {</span>
+<span class="fc" id="L33">            throw new IllegalArgumentException(&quot;userId is required&quot;);</span>
+        }
+
+
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        if (employeeRepository.existsByUser_Userid(</span>
+<span class="fc" id="L38">                employee.getUser().getUserid())) {</span>
+<span class="fc" id="L39">            throw new IllegalArgumentException(</span>
+                    &quot;Employee already exists for this userId&quot;);
+        }
+
+<span class="fc" id="L43">        return employeeRepository.save(employee);</span>
+    }
+
+    // -------------------- Fetch --------------------
+
+    @Override
+    @Transactional(readOnly = true)
+    public Employee getEmployeeById(Long employeeId) {
+<span class="fc" id="L51">        return employeeRepository.findById(employeeId)</span>
+<span class="fc" id="L52">                .orElseThrow(() -&gt;</span>
+<span class="fc" id="L53">                        new ResourceNotFoundException(</span>
+                                EMPLOYEE_NOT_FOUND+ employeeId));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Employee getEmployeeByUserId(Long userId) {
+<span class="pc" id="L60">        return employeeRepository.findByUser_Userid(userId)</span>
+<span class="nc" id="L61">                .orElseThrow(() -&gt;</span>
+<span class="fc" id="L62">                        new ResourceNotFoundException(EMPLOYEE_NOT_FOUND + userId));</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List&lt;Employee&gt; getAllEmployees() {
+<span class="fc" id="L68">        return employeeRepository.findAll();</span>
+    }
+
+    // -------------------- Update --------------------
+
+    @Override
+    @Transactional
+    public Employee updateEmployee(Long employeeId, Employee updated) {
+
+<span class="fc" id="L77">        Employee existing = employeeRepository.findById(employeeId)</span>
+<span class="fc" id="L78">                .orElseThrow(() -&gt;</span>
+<span class="nc" id="L79">                        new ResourceNotFoundException(EMPLOYEE_NOT_FOUND+ employeeId)</span>
+                );
+
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">        if (updated.getFullname() != null) {</span>
+<span class="fc" id="L83">            existing.setFullname(updated.getFullname());</span>
+        }
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">        if (updated.getDesignation() != null) {</span>
+<span class="nc" id="L86">            existing.setDesignation(updated.getDesignation());</span>
+        }
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        if (updated.getBranch() != null) {</span>
+<span class="fc" id="L89">            existing.setBranch(updated.getBranch());</span>
+        }
+
+<span class="fc" id="L92">        return employeeRepository.save(existing);</span>
+    }
+
+
+    // -------------------- Delete --------------------
+
+    @Override
+    @Transactional
+    public void deleteEmployee(Long employeeId) {
+
+<span class="fc" id="L102">        Employee existing = employeeRepository.findById(employeeId)</span>
+<span class="fc" id="L103">                .orElseThrow(() -&gt;</span>
+<span class="nc" id="L104">                        new ResourceNotFoundException(EMPLOYEE_NOT_FOUND+ employeeId)</span>
+                );
+
+<span class="fc" id="L107">        employeeRepository.delete(existing);</span>
+<span class="fc" id="L108">    }</span>
+
+    // -------------------- Exists --------------------
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existsByUserId(Long userId) {
+<span class="fc" id="L115">        return employeeRepository.existsByUser_Userid(userId);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

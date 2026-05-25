@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomerController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report"></a> &gt; <a href="index.source.html" class="el_package">com.bankingsystem.bankingsystem.controllers</a> &gt; <span class="el_source">CustomerController.java</span></div><h1>CustomerController.java</h1><pre class="source lang-java linenums">    package com.bankingsystem.bankingsystem.controllers;
+
+    import com.bankingsystem.bankingsystem.entity.Customer;
+    import com.bankingsystem.bankingsystem.entity.CustomerStatus;
+    import com.bankingsystem.bankingsystem.entity.KycStatus;
+    import com.bankingsystem.bankingsystem.services.CustomerServiceImp;
+    import com.bankingsystem.bankingsystem.util.ResponseMessage;
+    import org.springframework.http.MediaType;
+    import org.springframework.http.ResponseEntity;
+    import org.springframework.web.bind.annotation.*;
+    import java.util.List;
+    import java.util.Map;
+
+    @RestController
+    @RequestMapping(&quot;/api/customers&quot;)
+
+    public class CustomerController {
+
+        private static final String EXISTS_KEY = &quot;exists&quot;;
+
+        private final CustomerServiceImp customerService;
+
+<span class="fc" id="L23">        public CustomerController(CustomerServiceImp customerService) {</span>
+<span class="fc" id="L24">            this.customerService = customerService;</span>
+<span class="fc" id="L25">        }</span>
+
+        // -------------------- Customer CRUD --------------------
+
+        // Register customer (creates customer + default CustomerStatus)
+        @PostMapping(&quot;/register&quot;)
+        public ResponseEntity&lt;Customer&gt; registerCustomer(@RequestBody Customer customer) {
+<span class="fc" id="L32">            return ResponseEntity.ok(customerService.registerCustomer(customer));</span>
+        }
+
+        // Get customer by customerId
+        @GetMapping(&quot;/{customerId}&quot;)
+        public ResponseEntity&lt;Customer&gt; getCustomerById(@PathVariable Long customerId) {
+<span class="fc" id="L38">            return ResponseEntity.ok(customerService.getCustomerById(customerId));</span>
+        }
+
+        // Get customer by userId (auth userId reference)
+        @GetMapping(&quot;/by-user/{userId}&quot;)
+        public ResponseEntity&lt;Customer&gt; getCustomerByUserId(@PathVariable Long userId) {
+<span class="fc" id="L44">            return ResponseEntity.ok(customerService.getCustomerByUserId(userId));</span>
+        }
+
+        // Get by email
+        @GetMapping(&quot;/by-email&quot;)
+        public ResponseEntity&lt;Customer&gt; getCustomerByEmail(@RequestParam String email) {
+<span class="fc" id="L50">            return ResponseEntity.ok(customerService.getCustomerByEmail(email));</span>
+        }
+
+        // Get by phone
+        @GetMapping(&quot;/by-phone&quot;)
+        public ResponseEntity&lt;Customer&gt; getCustomerByPhone(@RequestParam String phone) {
+<span class="fc" id="L56">            return ResponseEntity.ok(customerService.getCustomerByPhone(phone));</span>
+        }
+
+        // Get all customers (employee use-case)
+        @GetMapping(value = &quot;/all&quot;, produces = MediaType.APPLICATION_JSON_VALUE)
+        public ResponseEntity&lt;List&lt;Customer&gt;&gt; getAllCustomers() {
+<span class="fc" id="L62">            return ResponseEntity.ok(customerService.getAllCustomers());</span>
+        }
+
+        // Update customer profile fields
+        @PutMapping(&quot;/update/{customerId}&quot;)
+        public ResponseEntity&lt;Customer&gt; updateCustomer(@PathVariable Long customerId,
+                                                       @RequestBody Customer updated) {
+<span class="fc" id="L69">            return ResponseEntity.ok(customerService.updateCustomer(customerId, updated));</span>
+        }
+
+        // Delete customer
+        @DeleteMapping(&quot;/delete/{customerId}&quot;)
+        public ResponseEntity&lt;ResponseMessage&gt; deleteCustomer(@PathVariable Long customerId) {
+
+<span class="fc" id="L76">            customerService.deleteCustomer(customerId);</span>
+
+<span class="fc" id="L78">            return ResponseEntity.ok(new ResponseMessage(&quot;Customer deleted&quot;));</span>
+        }
+
+        // -------------------- Customer Status Management --------------------
+
+        // Get customer status
+        @GetMapping(&quot;/{customerId}/status&quot;)
+        public ResponseEntity&lt;CustomerStatus&gt; getCustomerStatus(@PathVariable Long customerId) {
+<span class="fc" id="L86">            return ResponseEntity.ok(customerService.getCustomerStatus(customerId));</span>
+        }
+
+        // Activate customer (employee action)
+        @PutMapping(&quot;/{customerId}/status/activate&quot;)
+        public ResponseEntity&lt;CustomerStatus&gt; activateCustomer(@PathVariable Long customerId,
+                                                               @RequestParam(required = false) String remarks) {
+<span class="fc" id="L93">            return ResponseEntity.ok(customerService.activateCustomer(customerId, remarks));</span>
+        }
+
+        // Deactivate customer (employee action)
+        @PutMapping(&quot;/{customerId}/status/deactivate&quot;)
+        public ResponseEntity&lt;CustomerStatus&gt; deactivateCustomer(@PathVariable Long customerId,
+                                                                 @RequestParam(required = false) String remarks) {
+<span class="fc" id="L100">            return ResponseEntity.ok(customerService.deactivateCustomer(customerId, remarks));</span>
+        }
+
+        // -------------------- KYC Management --------------------
+
+        // Update KYC status (employee action)
+        @PutMapping(&quot;/{customerId}/kyc&quot;)
+        public ResponseEntity&lt;Customer&gt; updateKycStatus(@PathVariable Long customerId,
+                                                        @RequestParam KycStatus status) {
+<span class="fc" id="L109">            return ResponseEntity.ok(customerService.updateKycStatus(customerId, status));</span>
+        }
+
+        // -------------------- KYC Management --------------------
+
+        // ✅ NEW: Customer submits KYC proof
+        @PutMapping(&quot;/{customerId}/kyc/proof&quot;)
+        public ResponseEntity&lt;Customer&gt; submitKycProof(
+                @PathVariable Long customerId,
+                @RequestBody com.bankingsystem.bankingsystem.dto.KycProofRequest request
+        ) {
+<span class="fc" id="L120">            return ResponseEntity.ok(</span>
+<span class="fc" id="L121">                    customerService.submitKycProof(</span>
+                            customerId,
+<span class="fc" id="L123">                            request.getIdprooftype(),</span>
+<span class="fc" id="L124">                            request.getIdproofnumber()</span>
+                    )
+            );
+        }
+
+
+        // -------------------- Convenience Checks --------------------
+
+
+
+        @GetMapping(&quot;/exists/email&quot;)
+        public ResponseEntity&lt;Map&lt;String, Boolean&gt;&gt; existsByEmail(@RequestParam String email) {
+<span class="fc" id="L136">            return ResponseEntity.ok(</span>
+<span class="fc" id="L137">                    Map.of(EXISTS_KEY, customerService.existsByEmail(email))</span>
+            );
+        }
+
+        @GetMapping(&quot;/exists/phone&quot;)
+        public ResponseEntity&lt;Map&lt;String, Boolean&gt;&gt; existsByPhone(@RequestParam String phone) {
+<span class="fc" id="L143">            return ResponseEntity.ok(</span>
+<span class="fc" id="L144">                    Map.of(EXISTS_KEY, customerService.existsByPhone(phone))</span>
+            );
+        }
+
+        @GetMapping(&quot;/exists/user&quot;)
+        public ResponseEntity&lt;Map&lt;String, Boolean&gt;&gt; existsByUserId(@RequestParam Long userId) {
+<span class="fc" id="L150">            return ResponseEntity.ok(</span>
+<span class="fc" id="L151">                    Map.of(EXISTS_KEY, customerService.existsByUserId(userId))</span>
+            );
+        }
+
+    }
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

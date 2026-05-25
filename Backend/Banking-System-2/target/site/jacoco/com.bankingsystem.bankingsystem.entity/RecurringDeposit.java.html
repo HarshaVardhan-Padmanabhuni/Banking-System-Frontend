@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RecurringDeposit.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report"></a> &gt; <a href="index.source.html" class="el_package">com.bankingsystem.bankingsystem.entity</a> &gt; <span class="el_source">RecurringDeposit.java</span></div><h1>RecurringDeposit.java</h1><pre class="source lang-java linenums">package com.bankingsystem.bankingsystem.entity;
+
+import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+@Entity
+@Table(name = &quot;recurringdeposits&quot;)
+public class RecurringDeposit {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = &quot;rdid&quot;)
+    private Long rdid;
+
+    @ManyToOne
+    @JoinColumn(name = &quot;accountid&quot;, nullable = false)
+    private Account account;
+
+    @Column(name = &quot;monthlyamount&quot;, nullable = false)
+    private BigDecimal monthlyamount;
+
+    @Column(name = &quot;tenuremonths&quot;, nullable = false)
+    private Integer tenuremonths;
+
+    @Column(name = &quot;interestrate&quot;, nullable = false)
+    private BigDecimal interestrate;
+
+    @Column(name = &quot;startdate&quot;)
+    private LocalDate startdate;
+
+    @Column(name = &quot;maturitydate&quot;)
+    private LocalDate maturitydate;
+
+<span class="fc" id="L35">    @Enumerated(EnumType.STRING)</span>
+    @Column(name = &quot;status&quot;, nullable = false)
+    private DepositStatus status = DepositStatus.ACTIVE;
+
+    @PrePersist
+    public void prePersist() {
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        if (this.startdate == null) {</span>
+<span class="fc" id="L42">            this.startdate = LocalDate.now();</span>
+        }
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        if (this.status == null) {</span>
+<span class="fc" id="L45">            this.status = DepositStatus.ACTIVE;</span>
+        }
+<span class="fc" id="L47">    }</span>
+
+<span class="fc" id="L49">    public RecurringDeposit() {</span>
+<span class="fc" id="L50">    }</span>
+
+    public RecurringDeposit(Account account,
+                            BigDecimal monthlyamount,
+                            Integer tenuremonths,
+<span class="fc" id="L55">                            BigDecimal interestrate) {</span>
+<span class="fc" id="L56">        this.account = account;</span>
+<span class="fc" id="L57">        this.monthlyamount = monthlyamount;</span>
+<span class="fc" id="L58">        this.tenuremonths = tenuremonths;</span>
+<span class="fc" id="L59">        this.interestrate = interestrate;</span>
+<span class="fc" id="L60">        this.status = DepositStatus.ACTIVE;</span>
+<span class="fc" id="L61">    }</span>
+
+    public Long getRdid() {
+<span class="fc" id="L64">        return rdid;</span>
+    }
+
+    public void setRdid(Long rdid) {
+<span class="fc" id="L68">        this.rdid = rdid;</span>
+<span class="fc" id="L69">    }</span>
+
+    public Account getAccount() {
+<span class="nc" id="L72">        return account;</span>
+    }
+
+    public void setAccount(Account account) {
+<span class="nc" id="L76">        this.account = account;</span>
+<span class="nc" id="L77">    }</span>
+
+    public BigDecimal getMonthlyamount() {
+<span class="nc" id="L80">        return monthlyamount;</span>
+    }
+
+    public void setMonthlyamount(BigDecimal monthlyamount) {
+<span class="nc" id="L84">        this.monthlyamount = monthlyamount;</span>
+<span class="nc" id="L85">    }</span>
+
+    public Integer getTenuremonths() {
+<span class="nc" id="L88">        return tenuremonths;</span>
+    }
+
+    public void setTenuremonths(Integer tenuremonths) {
+<span class="nc" id="L92">        this.tenuremonths = tenuremonths;</span>
+<span class="nc" id="L93">    }</span>
+
+    public BigDecimal getInterestrate() {
+<span class="nc" id="L96">        return interestrate;</span>
+    }
+
+    public void setInterestrate(BigDecimal interestrate) {
+<span class="nc" id="L100">        this.interestrate = interestrate;</span>
+<span class="nc" id="L101">    }</span>
+
+    public LocalDate getStartdate() {
+<span class="fc" id="L104">        return startdate;</span>
+    }
+
+    public void setStartdate(LocalDate startdate) {
+<span class="fc" id="L108">        this.startdate = startdate;</span>
+<span class="fc" id="L109">    }</span>
+
+    public LocalDate getMaturitydate() {
+<span class="nc" id="L112">        return maturitydate;</span>
+    }
+
+    public void setMaturitydate(LocalDate maturitydate) {
+<span class="nc" id="L116">        this.maturitydate = maturitydate;</span>
+<span class="nc" id="L117">    }</span>
+
+    public DepositStatus getStatus() {
+<span class="fc" id="L120">        return status;</span>
+    }
+
+    public void setStatus(DepositStatus status) {
+<span class="fc" id="L124">        this.status = status;</span>
+<span class="fc" id="L125">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
