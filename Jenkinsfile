@@ -21,7 +21,7 @@ pipeline {
             }
         }
 
-        // ✅ Create .env dynamically (IMPORTANT)
+        // Create .env dynamically
         stage('Create Env File') {
             steps {
                 dir('frontend') {
@@ -32,7 +32,7 @@ pipeline {
             }
         }
 
-        // ✅ Frontend build
+        // Frontend build
         stage('Install Frontend Dependencies') {
             steps {
                 dir('frontend') {
@@ -49,7 +49,7 @@ pipeline {
             }
         }
 
-        // ✅ Backend build (all microservices)
+        // Backend build (all microservices)
         stage('Build Backend') {
             steps {
                 dir('Backend') {
@@ -58,7 +58,7 @@ pipeline {
             }
         }
 
-        // ✅ (Optional but very important) Run services in order
+        //Run services in order(optional)
         stage('Start Eureka Server') {
             steps {
                 dir('Backend/eureka-server') {
@@ -79,11 +79,10 @@ pipeline {
 
     post {
         success {
-            echo '✅ Pipeline completed successfully!'
+            echo 'Pipeline completed successfully!'
         }
         failure {
-            echo '❌ Pipeline failed!'
+            echo 'Pipeline failed!'
         }
     }
 }
-``
