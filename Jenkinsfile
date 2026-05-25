@@ -1,4 +1,5 @@
-def services = [def    'Banking-System-2',
+def services = [
+    'Banking-System-2',
     'accountservice',
     'api-gateway',
     'authservice',
