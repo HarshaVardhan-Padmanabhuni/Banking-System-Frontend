@@ -1,0 +1,229 @@
+body {
+ margin: 0;
+}
+.auth-container {
+ display: flex;
+ height: 100vh;
+ width: 100%;
+}
+.auth-left {
+ flex: 1;
+ position: relative;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ overflow: hidden;
+}
+/* Background Image */
+.auth-left::before {
+ content: "";
+ position: absolute;
+ inset: 0;
+ background: url("/bsnk-bg.jpg") center no-repeat;
+   background-size: cover;
+ z-index: 1;
+}
+/* Optional overlay (slight dark for better contrast) */
+.auth-left::after {
+ content: "";
+ position: absolute;
+ inset: 0;
+ background: rgba(0, 0, 0, 0.15);
+ z-index: 2;
+}
+/* Keep content above */
+.auth-left-content {
+ position: relative;
+ z-index: 3;
+ color: white;
+}
+.features p {
+ margin: 8px 0;
+ font-size: 14px;
+}
+.auth-card {
+ flex: 1;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ padding: 40px;
+ max-width: 650px;
+ margin: auto;
+}
+.auth-title {
+ margin-bottom: 6px;
+ font-size: 22px;
+ font-weight: 600;
+}
+.auth-subtitle {
+ font-size: 14px;
+ color: #666;
+ margin-bottom: 20px;
+}
+/* FORM LAYOUT */
+.form-section {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 14px;
+}
+.form-group {
+ display: flex;
+ flex-direction: column;
+}
+.form-group.full {
+ grid-column: span 2;
+}
+.form-group label {
+ font-size: 13px;
+ margin-bottom: 4px;
+ color: #555;
+}
+input, select {
+ padding: 10px;
+ border-radius: 8px;
+ border: 1px solid #ddd;
+}
+/* BUTTON */
+.primary-btn {
+ grid-column: span 2;
+ padding: 12px;
+ border-radius: 10px;
+ border: none;
+ background: #2563eb;
+ color: white;
+ cursor: pointer;
+ margin-top: 10px;
+}
+/* OTP */
+.otp-section {
+ display: flex;
+ flex-direction: column;
+ gap: 12px;
+}
+.otp-text {
+ font-size: 14px;
+ color: #444;
+}
+.otp-demo {
+ font-size: 12px;
+ color: #16a34a;
+}
+.otp-input {
+ padding: 12px;
+}
+input, select {
+ padding: 12px;
+ border-radius: 10px;
+ border: 1px solid #ddd;
+}
+button {
+ padding: 12px;
+ border-radius: 10px;
+ border: none;
+ background: #2563eb;
+ color: white;
+ cursor: pointer;
+}
+/* FULL PAGE BACKGROUND */
+ 
+.login-page {
+ 
+  height: 100vh;
+ 
+  width: 100%;
+ 
+ 
+  display: flex;
+ 
+  justify-content: center;
+ 
+  align-items: center;
+ 
+  position: relative;
+ 
+}
+ 
+/* DIM OVERLAY */
+ 
+.login-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/bank-login-bg.png") center/cover no-repeat;
+  filter: blur(5px);              
+  transform: scale(1.05);        
+ 
+}
+/* LOGIN CARD */
+ 
+.login-card {
+ 
+  position: relative;
+ 
+  z-index: 2;
+ 
+  background: white;
+ 
+  padding: 40px;
+ 
+  border-radius: 16px;
+ 
+  width: 350px;
+ 
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+ 
+  display: flex;
+ 
+  flex-direction: column;
+ 
+  gap: 14px;
+ 
+}
+ 
+/* INPUTS */
+ 
+.login-card input {
+ 
+  padding: 12px;
+ 
+  border-radius: 10px;
+ 
+  border: 1px solid #ddd;
+ 
+}
+ 
+/* BUTTON */
+ 
+.login-card button {
+ 
+  padding: 12px;
+ 
+  border-radius: 10px;
+ 
+  border: none;
+ 
+  background: #2563eb;
+ 
+  color: white;
+ 
+  cursor: pointer;
+ 
+}
+ 
+/* LINK */
+ 
+.register-link {
+ 
+  font-size: 13px;
+ 
+  text-align: center;
+ 
+}
+ 
+.register-link span {
+ 
+  color: #2563eb;
+ 
+  cursor: pointer;
+ 
+}
