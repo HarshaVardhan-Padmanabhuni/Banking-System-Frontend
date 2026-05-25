@@ -65,7 +65,7 @@ pipeline {
                     services.each { svc ->
                         echo "Building ${svc}..."
                         dir("Backend/${svc}") {
-                            bat 'mvn clean install -DskipTests'
+                            bat 'mvn clean install -Dmaven.test.skip=true'
                         }
                     }
                 }
