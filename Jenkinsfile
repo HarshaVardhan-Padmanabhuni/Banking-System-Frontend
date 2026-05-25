@@ -1,6 +1,17 @@
 pipeline {
     agent any
 
+    environment {
+        // You can change this later to server IP
+        VITE_API_GATEWAY_URL = "http://localhost:9192"
+    }
+
+    tools {
+        nodejs 'NodeJS'     // Configure this in Jenkins tools
+        maven 'Maven'      // Configure this in Jenkins tools
+        jdk 'JDK17'        // Configure this also
+    }
+
     stages {
 
         stage('Checkout') {
@@ -10,7 +21,19 @@ pipeline {
             }
         }
 
-        stage('Install Frontend') {
+        // ✅ Create .env dynamically (IMPORTANT)
+        stage('Create Env File') {
+            steps {
+                dir('frontend') {
+                    sh '''
+                    echo "VITE_API_GATEWAY_URL=${VITE_API_GATEWAY_URL}" > .env
+                    '''
+                }
+            }
+        }
+
+        // ✅ Frontend build
+        stage('Install Frontend Dependencies') {
             steps {
                 dir('frontend') {
                     sh 'npm install'
@@ -26,6 +49,7 @@ pipeline {
             }
         }
 
+        // ✅ Backend build (all microservices)
         stage('Build Backend') {
             steps {
                 dir('Backend') {
@@ -34,5 +58,32 @@ pipeline {
             }
         }
 
+        // ✅ (Optional but very important) Run services in order
+        stage('Start Eureka Server') {
+            steps {
+                dir('Backend/eureka-server') {
+                    sh 'nohup mvn spring-boot:run > eureka.log 2>&1 &'
+                }
+            }
+        }
+
+        stage('Start API Gateway') {
+            steps {
+                dir('Backend/api-gateway') {
+                    sh 'nohup mvn spring-boot:run > gateway.log 2>&1 &'
+                }
+            }
+        }
+
+    }
+
+    post {
+        success {
+            echo '✅ Pipeline completed successfully!'
+        }
+        failure {
+            echo '❌ Pipeline failed!'
+        }
     }
 }
+``
