@@ -1,10 +1,11 @@
-def services = [def servicesing-System-2',
+def services = [def    'Banking-System-2',
     'accountservice',
     'api-gateway',
     'authservice',
     'eureka-server',
     'transactionservice'
 ]
+
 
 pipeline {
     agent any
