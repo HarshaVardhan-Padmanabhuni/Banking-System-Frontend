@@ -8,8 +8,8 @@ pipeline {
 
     tools {
         nodejs 'NodeJS'     // Configure this in Jenkins tools
-        maven 'Maven'      // Configure this in Jenkins tools
-        jdk 'JDK17'        // Configure this also
+        maven 'maven'      // Configure this in Jenkins tools
+        jdk 'JAVA'        // Configure this also
     }
 
     stages {
