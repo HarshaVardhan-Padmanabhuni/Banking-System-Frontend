@@ -1,3 +1,11 @@
+def services = [def servicesing-System-2',
+    'accountservice',
+    'api-gateway',
+    'authservice',
+    'eureka-server',
+    'transactionservice'
+]
+
 pipeline {
     agent any
 
@@ -6,13 +14,14 @@ pipeline {
     }
 
     tools {
-        nodejs 'NodeJS'   // must match Jenkins Tools name
+        nodejs 'NodeJS'
         maven 'maven'
-        jdk 'JAVA'        // use your configured JDK name
+        jdk 'JAVA'
     }
 
     stages {
 
+        // Checkout code
         stage('Checkout') {
             steps {
                 git branch: 'harshitha',
@@ -20,7 +29,7 @@ pipeline {
             }
         }
 
-        // Create .env (FIXED for Windows)
+        // Create .env file for frontend
         stage('Create Env File') {
             steps {
                 dir('frontend') {
@@ -29,7 +38,7 @@ pipeline {
             }
         }
 
-        // Frontend install
+        // Install frontend dependencies
         stage('Install Frontend Dependencies') {
             steps {
                 dir('frontend') {
@@ -38,7 +47,7 @@ pipeline {
             }
         }
 
-        // Frontend build
+        // Build frontend
         stage('Build Frontend') {
             steps {
                 dir('frontend') {
@@ -47,33 +56,64 @@ pipeline {
             }
         }
 
-        // Backend build
-        stage('Build Backend') {
+        // Build ALL backend services
+        stage('Build Backend Services') {
             steps {
-                dir('Backend') {
-                    bat 'mvn clean install -DskipTests'
+                script {
+                    services.each { svc ->
+                        echo "Building ${svc}..."
+                        dir("Backend/${svc}") {
+                            bat 'mvn clean install -DskipTests'
+                        }
+                    }
                 }
             }
         }
 
-        // Run Eureka
+        // Start Eureka Server FIRST
         stage('Start Eureka Server') {
             steps {
-                dir('Backend\\eureka-server') {
+                dir('Backend/eureka-server') {
                     bat 'start cmd /c mvn spring-boot:run'
                 }
             }
         }
 
-        // Run API Gateway
+        // Start Auth Service (optional but recommended)
+        stage('Start Auth Service') {
+            steps {
+                dir('Backend/authservice') {
+                    bat 'start cmd /c mvn spring-boot:run'
+                }
+            }
+        }
+
+        // Start Account Service
+        stage('Start Account Service') {
+            steps {
+                dir('Backend/accountservice') {
+                    bat 'start cmd /c mvn spring-boot:run'
+                }
+            }
+        }
+
+        // Start Transaction Service
+        stage('Start Transaction Service') {
+            steps {
+                dir('Backend/transactionservice') {
+                    bat 'start cmd /c mvn spring-boot:run'
+                }
+            }
+        }
+
+        // Start API Gateway LAST
         stage('Start API Gateway') {
             steps {
-                dir('Backend\\api-gateway') {
+                dir('Backend/api-gateway') {
                     bat 'start cmd /c mvn spring-boot:run'
                 }
             }
         }
-
     }
 
     post {
