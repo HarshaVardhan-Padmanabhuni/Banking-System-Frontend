@@ -11,9 +11,18 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
+<<<<<<< HEAD
     "bootstrap": "^5.3.8",
     "jspdf": "^4.2.1",
     "jspdf-autotable": "^5.0.7",
+=======
+    "axios": "^1.15.2",
+    "bootstrap": "^5.3.8",
+    "framer-motion": "^12.38.0",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.7",
+    "lucide-react": "^1.14.0",
+>>>>>>> bfb824e2258214349f8bf8c88600254417810ac8
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-router-dom": "^7.14.2"

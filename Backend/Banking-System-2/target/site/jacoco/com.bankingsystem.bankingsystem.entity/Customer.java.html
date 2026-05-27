@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Customer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report"></a> &gt; <a href="index.source.html" class="el_package">com.bankingsystem.bankingsystem.entity</a> &gt; <span class="el_source">Customer.java</span></div><h1>Customer.java</h1><pre class="source lang-java linenums">package com.bankingsystem.bankingsystem.entity;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = &quot;customers&quot;)
+public class Customer {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = &quot;customerid&quot;)
+    private Long customerid;
+
+    @OneToOne
+    @JoinColumn(name = &quot;userid&quot;, nullable = false, unique = true)
+    private User user;
+
+    @Column(name = &quot;fullname&quot;, nullable = false, length = 100)
+    private String fullname;
+
+    @Column(name = &quot;email&quot;, nullable = false, unique = true, length = 100)
+    private String email;
+
+    @Column(name = &quot;phone&quot;, nullable = false, unique = true, length = 15)
+    private String phone;
+
+    @Column(name = &quot;address&quot;, columnDefinition = &quot;TEXT&quot;)
+    private String address;
+
+<span class="fc" id="L31">    @Enumerated(EnumType.STRING)</span>
+    @Column(name = &quot;kycstatus&quot;, nullable = false)
+    private KycStatus kycstatus = KycStatus.PENDING;  // PENDING/VERIFIED/REJECTED [2](https://insightgloballlc.sharepoint.com/sites/msd/IandI/Advance%20Services%20Intake/PortalTempUploads/30318446-d416-4892-9e21-157a0a71b12f__Customer%20Journey%20-%20Amazon%20Gabby%20Lizzul.pdf?web=1)
+
+    // ✅ NEW COLUMNS (you said you already added in DB)
+    @Column(name = &quot;idprooftype&quot;, length = 50)
+    private String idprooftype;
+
+    @Column(name = &quot;idproofnumber&quot;, length = 100)
+    private String idproofnumber;
+
+    @Column(name = &quot;createdat&quot;, updatable = false)
+    private LocalDateTime createdat;
+
+    @PrePersist
+    public void prePersist() {
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">        if (this.createdat == null) this.createdat = LocalDateTime.now();</span>
+<span class="pc bpc" id="L48" title="1 of 2 branches missed.">        if (this.kycstatus == null) this.kycstatus = KycStatus.PENDING;</span>
+<span class="fc" id="L49">    }</span>
+
+<span class="fc" id="L51">    public Customer() {</span>
+        // Default constructor required by JPA/Hibernate for entity instantiation
+<span class="fc" id="L53">    }</span>
+
+    // ---- getters/setters ----
+
+<span class="fc" id="L57">    public Long getCustomerid() { return customerid; }</span>
+<span class="fc" id="L58">    public void setCustomerid(Long customerid) { this.customerid = customerid; }</span>
+
+<span class="fc" id="L60">    public User getUser() { return user; }</span>
+<span class="fc" id="L61">    public void setUser(User user) { this.user = user; }</span>
+
+<span class="fc" id="L63">    public String getFullname() { return fullname; }</span>
+<span class="fc" id="L64">    public void setFullname(String fullname) { this.fullname = fullname; }</span>
+
+<span class="fc" id="L66">    public String getEmail() { return email; }</span>
+<span class="fc" id="L67">    public void setEmail(String email) { this.email = email; }</span>
+
+<span class="fc" id="L69">    public String getPhone() { return phone; }</span>
+<span class="fc" id="L70">    public void setPhone(String phone) { this.phone = phone; }</span>
+
+<span class="fc" id="L72">    public String getAddress() { return address; }</span>
+<span class="fc" id="L73">    public void setAddress(String address) { this.address = address; }</span>
+
+<span class="fc" id="L75">    public KycStatus getKycstatus() { return kycstatus; }</span>
+<span class="fc" id="L76">    public void setKycstatus(KycStatus kycstatus) { this.kycstatus = kycstatus; }</span>
+
+    // ✅ NEW getters/setters
+<span class="fc" id="L79">    public String getIdprooftype() { return idprooftype; }</span>
+<span class="fc" id="L80">    public void setIdprooftype(String idprooftype) { this.idprooftype = idprooftype; }</span>
+
+<span class="fc" id="L82">    public String getIdproofnumber() { return idproofnumber; }</span>
+<span class="fc" id="L83">    public void setIdproofnumber(String idproofnumber) { this.idproofnumber = idproofnumber; }</span>
+
+<span class="fc" id="L85">    public LocalDateTime getCreatedat() { return createdat; }</span>
+<span class="nc" id="L86">    public void setCreatedat(LocalDateTime createdat) { this.createdat = createdat; }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

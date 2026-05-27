@@ -125,6 +125,7 @@ button {
  cursor: pointer;
 }
 /* FULL PAGE BACKGROUND */
+<<<<<<< HEAD
 
 .login-page {
 
@@ -145,11 +146,34 @@ button {
 
 /* DIM OVERLAY */
 
+=======
+ 
+.login-page {
+ 
+  height: 100vh;
+ 
+  width: 100%;
+ 
+ 
+  display: flex;
+ 
+  justify-content: center;
+ 
+  align-items: center;
+ 
+  position: relative;
+ 
+}
+ 
+/* DIM OVERLAY */
+ 
+>>>>>>> bfb824e2258214349f8bf8c88600254417810ac8
 .login-page::before {
   content: "";
   position: absolute;
   inset: 0;
   background: url("/bank-login-bg.png") center/cover no-repeat;
+<<<<<<< HEAD
   filter: blur(5px);              /* ✅ BLUR ONLY IMAGE */
   transform: scale(1.05);         /* ✅ avoid edges */
 
@@ -228,3 +252,82 @@ button {
 
 }
  
+=======
+  filter: blur(5px);              
+  transform: scale(1.05);        
+ 
+}
+/* LOGIN CARD */
+ 
+.login-card {
+ 
+  position: relative;
+ 
+  z-index: 2;
+ 
+  background: white;
+ 
+  padding: 40px;
+ 
+  border-radius: 16px;
+ 
+  width: 350px;
+ 
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+ 
+  display: flex;
+ 
+  flex-direction: column;
+ 
+  gap: 14px;
+ 
+}
+ 
+/* INPUTS */
+ 
+.login-card input {
+ 
+  padding: 12px;
+ 
+  border-radius: 10px;
+ 
+  border: 1px solid #ddd;
+ 
+}
+ 
+/* BUTTON */
+ 
+.login-card button {
+ 
+  padding: 12px;
+ 
+  border-radius: 10px;
+ 
+  border: none;
+ 
+  background: #2563eb;
+ 
+  color: white;
+ 
+  cursor: pointer;
+ 
+}
+ 
+/* LINK */
+ 
+.register-link {
+ 
+  font-size: 13px;
+ 
+  text-align: center;
+ 
+}
+ 
+.register-link span {
+ 
+  color: #2563eb;
+ 
+  cursor: pointer;
+ 
+}
+>>>>>>> bfb824e2258214349f8bf8c88600254417810ac8
